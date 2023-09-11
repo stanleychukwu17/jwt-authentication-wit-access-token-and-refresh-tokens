@@ -1,6 +1,7 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import routes from './routes'
 
 const port = process.env.PORT || 4000
 
@@ -34,6 +35,8 @@ connectToDb((err: any) => {
 
         // updates our database variable
         db = getDb()
+
+        routes(app);
     } else {
         console.log(`we have an error, error: ${err}`)
     }
