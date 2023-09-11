@@ -1,9 +1,17 @@
 import { Express } from "express";
 
+import {
+    createSessionHandler,
+    // getSessionHandler,
+    // deleteSessionHandler,
+} from "./controllers/session.controller";
+
 function routes(app:Express) {
     // login
-    app.post("/api/session", () => {
+    app.post("/api/session", (req, res) => {
         console.log('we have a timeline to become the best')
+        console.log(req.body)
+        return res.json({'msg':'okay from my server!'})
     });
 
     // get the current session
