@@ -22,20 +22,8 @@ export function createSessionHandler(req: Request, res: Response) {
   
     const refreshToken = signJWT({ sessionId: session.sessionId }, "1y");
   
-    // set access token in cookie
-    res.cookie("accessToken", accessToken, {
-        maxAge: 300000, // 5 minutes
-        httpOnly: true,
-    });
-  
-    res.cookie("refreshToken", refreshToken, {
-        maxAge: 3.154e10, // 1 year
-        httpOnly: true,
-    });
-  
-    console.log(res.cookie)
     // send user back
-    return res.send(session);
+    return res.json({'msg':'okay', accessToken, refreshToken});
 }
 
 export function getSessionHandler(req: Request, res: Response) {
