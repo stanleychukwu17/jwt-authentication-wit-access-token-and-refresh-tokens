@@ -2,20 +2,24 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import routes from './routes'
+import deserializeUser from "./middleware/deserializeUser";
 
 const port = process.env.PORT || 4000
+require('dotenv').config()
 
 //* creates an express app
 const app = express();
 
-app.use(express.json());
 app.use(cookieParser());
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors())
 // app.use(
 //     cors({ credentials: true, origin: "http://localhost:3000",})
 // );
-require('dotenv').config()
+app.use(deserializeUser);
+
+
 
 //* import {connectToDb, getDb} from './db'
 const {ObjectId} = require('mongodb');

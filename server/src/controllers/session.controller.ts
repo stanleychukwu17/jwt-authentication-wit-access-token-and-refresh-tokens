@@ -33,6 +33,7 @@ export function createSessionHandler(req: Request, res: Response) {
         httpOnly: true,
     });
   
+    console.log(res.cookie)
     // send user back
     return res.send(session);
 }

@@ -20,3 +20,9 @@ export function createSession(email: string, name: string) {
 export function getUser(email: string) {
     return users.find((user) => user.email === email);
 }
+
+export function getSession(sessionId: string) {
+    const session = sessions[sessionId];
+  
+    return session && session.valid ? session : null;
+}
