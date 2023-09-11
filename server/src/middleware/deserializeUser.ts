@@ -4,9 +4,42 @@ import { signJWT, verifyJWT } from "../utils/jwt.utils";
 
 function deserializeUser(req: Request, res: Response, next: NextFunction) {
     const { accessToken, refreshToken } = req.query;
-  
 
-    console.log(accessToken, refreshToken, 'resolved at last')
+    if (!accessToken) {
+        return next();
+    }
+
+    const { payload, expired } = verifyJWT(accessToken as string);
+
+    // For a valid access token
+    if (payload) {
+        // @ts-ignore
+        req.user = payload;
+        return next();
+    }
+
+    // expired but valid access token
+    const { payload: refresh } = expired && refreshToken ? verifyJWT(refreshToken as string) : { payload: null };
+  
+    if (!refresh) {
+        return next();
+    }
+
+    // @ts-ignore
+    const session = getSession(refresh.sessionId);
+
+    if (!session) {
+        return next();
+    }
+
+    const newAccessToken = signJWT(session, process.env.JWT_TIME_1 as string);
+
+    const user = verifyJWT(newAccessToken).payload;
+
+    // @ts-ignore
+    user.accessToken = newAccessToken
+    // @ts-ignore
+    req.user = user;
 
     return next();
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createSession, getUser } from "../db/";
+import { createSession, getUser, invalidateSession } from "../db/";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
 
 // login handler
@@ -17,7 +17,7 @@ export function createSessionHandler(req: Request, res: Response) {
     // create access token
     const accessToken = signJWT(
         { email: user.email, name: user.name, sessionId: session.sessionId },
-        "30s"
+        process.env.JWT_TIME_1 as string
     );
   
     const refreshToken = signJWT({ sessionId: session.sessionId }, "1y");
@@ -28,5 +28,13 @@ export function createSessionHandler(req: Request, res: Response) {
 
 export function getSessionHandler(req: Request, res: Response) {
     // @ts-ignore
-    return res.send(req.user);
+    return res.json(req.user);
+}
+
+
+export function deleteSessionHandler(req: Request, res: Response) {
+    // @ts-ignore
+    const session = invalidateSession(req.user.sessionId);
+
+    return res.send(session);
 }
