@@ -9,11 +9,11 @@ export const sessions: Record<
 
 export function createSession(email: string, name: string) {
     const sessionId = String(Object.keys(sessions).length + 1);
-  
-    const session = { sessionId, email, valid: true, name };
-  
+
+    const session = {sessionId, email, valid: true, name};
+
     sessions[sessionId] = session;
-  
+
     return session;
 }
 

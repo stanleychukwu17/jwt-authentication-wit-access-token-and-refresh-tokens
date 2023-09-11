@@ -36,3 +36,8 @@ export function createSessionHandler(req: Request, res: Response) {
     // send user back
     return res.send(session);
 }
+
+export function getSessionHandler(req: Request, res: Response) {
+    // @ts-ignore
+    return res.send(req.user);
+}
