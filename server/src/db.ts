@@ -5,7 +5,7 @@ type callbackFn = (info?:any) => void
 
 // declaration of variables to be used/updated
 let dbConnection: any
-let dbUrl:string = 'mongodb://localhost:27017/bookstore'
+let dbUrl:string = 'mongodb://localhost:27017/Jwt-Authentication/'
 
 module.exports = {
     connectToDb : (cb: callbackFn) => {

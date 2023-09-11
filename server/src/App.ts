@@ -1,12 +1,23 @@
 import express from 'express'
-require('dotenv').config()
-const {graphqlHTTP} = require('express-graphql')
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
+const port = process.env.PORT || 4000
 
 //* creates an express app
-const port = process.env.PORT || 4000
 const app = express();
+
 app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
+app.use(cors())
+// app.use(
+//     cors({
+//         credentials: true,
+//         origin: "http://localhost:3000",
+//     })
+// );
+require('dotenv').config()
 
 //* import {connectToDb, getDb} from './db'
 const {ObjectId} = require('mongodb');
@@ -27,8 +38,3 @@ connectToDb((err: any) => {
         console.log(`we have an error, error: ${err}`)
     }
 })
-
-
-// app.listen(port, () => {
-//     console.log(`now listening to request from port ${port}`)
-// })
