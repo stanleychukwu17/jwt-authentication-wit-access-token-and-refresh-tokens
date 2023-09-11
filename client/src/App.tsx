@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { useState } from 'react'
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+function App () {
+    return (
+        <main>
+            <section className="w-1/3 bg-[#ecf0f1] m-10 my-10 p-5 rounded-md">
+                <div className="text-2xl font-semibold">Login</div>
+                <div className="py-5">
+                    <div className="py-5">
+                        <div className="font-semibold">Email</div>
+                        <div className="">
+                            <input className="w-full mt-2 p-3 rounded" type="email" />
+                        </div>
+                    </div>
+                    <div className="">
+                        <div className="font-semibold">Password</div>
+                        <div className="">
+                            <input className="w-full mt-2 p-3 rounded" type="password" />
+                        </div>
+                    </div>
+                </div>
+                <div className="py-2">
+                    <button className="bg-[#67f2d1] p-5 w-40 text-lg font-semibold rounded tracking-wide relative active:top-1">Login</button>
+                </div>
+                <div className="py-5 pb-3 text-md tracking-wide"></div>
+            </section>
+
+            <section className="w-1/3 bg-[#ecf0f1] m-10 my-10 p-5 rounded-md">
+                <div className="text-2xl font-semibold">Session</div>
+                <div className="py-2">
+                    <button className="bg-[#67f2d1] mt-7 p-5 w-56 text-lg font-semibold rounded tracking-wide relative active:top-1">Get session data</button>
+                </div>
+                <div className="py-5 pb-3 text-md tracking-wide"></div>
+            </section>
+
+            <section className="w-1/3 bg-[#ecf0f1] m-10 my-10 p-5 rounded-md">
+                <div className="text-2xl font-semibold">Logout</div>
+                <div className="py-2">
+                    <button className="bg-[#67f2d1] mt-7 p-5 w-40 text-lg font-semibold rounded tracking-wide relative active:top-1">Logout </button>
+                </div>
+                <div className="py-5 pb-3 text-md tracking-wide"></div>
+            </section>
+
+        </main>
+    )
 }
 
 export default App
