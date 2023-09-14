@@ -18,7 +18,10 @@ function App () {
                 setAccessDetails(res.data)
             }
 
-            setLoginData(res.data.msg)
+            console.log(res.data)
+            if (res.data.found !== true) {
+                setLoginData(res.data.msg)
+            }
         })
         .catch((error) => setLoginData(error.message));
     }, [email, password])
