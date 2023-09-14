@@ -34,7 +34,10 @@ function App () {
     async function logout() {
         axios
           .delete(`http://localhost:4000/api/session`, {params: accessDetails})
-          .then((res) => setLogoutData(res.data))
+          .then((res) => {
+            setAccessDetails({accessToken:'', refreshToken:''})
+            setLogoutData(res.data)
+          })
           .catch((error) => setLogoutData(error.message));
     }
 
