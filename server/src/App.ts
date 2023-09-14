@@ -1,6 +1,7 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+
 import routes from './routes'
 import deserializeUser from "./middleware/deserializeUser";
 
@@ -17,15 +18,16 @@ app.use(cors())
 // app.use(
 //     cors({ credentials: true, origin: "http://localhost:3000",})
 // );
+
+// checks to see if the user is a has a valid accessToken or refreshToken
 app.use(deserializeUser);
 
 
 
 //* import {connectToDb, getDb} from './db'
-const {ObjectId} = require('mongodb');
 const {connectToDb, getDb} = require('./db')
 
-//* opens connection to the mongodb database before listening for request
+//* connects to the mongodb database before listening for request
 let db: any
 connectToDb((err: any) => {
     if (!err) {
