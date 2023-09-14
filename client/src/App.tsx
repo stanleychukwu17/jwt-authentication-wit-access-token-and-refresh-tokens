@@ -14,14 +14,11 @@ function App () {
     const login = useCallback(() => {
         axios.post(`http://localhost:4000/api/session`, { email, password })
         .then((res) => {
-            if (res.data.msg == 'okay') {
+            if (res.data.msg == 'okay' && res.data.accessToken) {
                 setAccessDetails(res.data)
             }
 
-            console.log(res.data)
-            if (res.data.found !== true) {
-                setLoginData(res.data.msg)
-            }
+            setLoginData(res.data.msg)
         })
         .catch((error) => setLoginData(error.message));
     }, [email, password])
@@ -36,7 +33,7 @@ function App () {
 
     async function logout() {
         axios
-          .delete(`http://localhost:4000/api/session`)
+          .delete(`http://localhost:4000/api/session`, {params: accessDetails})
           .then((res) => setLogoutData(res.data))
           .catch((error) => setLogoutData(error.message));
     }
