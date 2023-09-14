@@ -2,7 +2,7 @@ import { Express } from "express";
 import {
     createSessionHandler,
     getSessionHandler,
-    // deleteSessionHandler,
+    deleteSessionHandler,
 } from "./controllers/session.controller";
 import { requireUser } from "./middleware/requireUser";
 
@@ -14,7 +14,7 @@ function routes(app:Express) {
     app.get("/api/session", requireUser, getSessionHandler);
 
     // logout
-    // app.delete("/api/session", requireUser, deleteSessionHandler);
+    app.delete("/api/session", requireUser, deleteSessionHandler);
 
     return app
 }
