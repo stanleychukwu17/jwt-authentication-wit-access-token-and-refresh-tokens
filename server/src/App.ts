@@ -23,7 +23,6 @@ app.use(cors())
 app.use(deserializeUser);
 
 
-
 //* import {connectToDb, getDb} from './db'
 const {connectToDb, getDb} = require('./db')
 

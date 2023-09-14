@@ -49,5 +49,5 @@ export function deleteSessionHandler(req: Request, res: Response) {
     // @ts-ignore
     const session = invalidateSession(req.user.sessionId);
 
-    return res.send(session);
+    res.json({'msg':'okay', session})
 }
