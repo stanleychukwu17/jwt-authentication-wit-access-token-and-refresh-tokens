@@ -1,44 +1,42 @@
-// import { useState } from 'react'
-
 import { useCallback, useState } from "react"
+import axios from "axios";
 
 
 function App () {
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    const [email, setEmail] = useState<string>('test@test.com')
+    const [password, setPassword] = useState<string>('password')
+
+    const [accessDetails, setAccessDetails] = useState<{accessToken:string, refreshToken:string}>();
+    const [loginData, setLoginData] = useState();
+    const [sessionData, setSessionData] = useState();
+    const [logoutData, setLogoutData] = useState();
 
     const login = useCallback(() => {
-        // Define the URL of your backend server
-        const url = 'http://localhost:4000/api/session';
+        axios.post(`http://localhost:4000/api/session`, { email, password })
+        .then((res) => {
+            if (res.data.msg == 'okay') {
+                setAccessDetails(res.data)
+            }
 
-        // Define the data you want to send in the POST request (e.g., JSON data)
-        const postData = {email, password};
-
-        // Create an options object for the fetch request (including method, headers, and body)
-        const requestOptions: RequestInit = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(postData),
-        };
-
-        console.log('sent!')
-        // Perform the fetch request
-        fetch(url, requestOptions)
-            .then((response) => {
-                // Check if the response status is OK (status code 200)
-                if (response.ok) {
-                    return response.json(); // Parse the response body as JSON
-                } else {
-                    throw new Error('Request failed');
-                }
-            })
-            .then((data) => {
-                console.log('Response Data:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error.message);
-            });
+            setLoginData(res.data.msg)
+        })
+        .catch((error) => setLoginData(error.message));
     }, [email, password])
+
+
+    async function getSessionData() {
+        axios
+            .get(`http://localhost:4000/api/session`, {params: accessDetails})
+            .then((res) => setSessionData(res.data))
+            .catch((error) => setSessionData(error.message));
+    }
+
+    async function logout() {
+        axios
+          .delete(`http://localhost:4000/api/session`)
+          .then((res) => setLogoutData(res.data))
+          .catch((error) => setLogoutData(error.message));
+    }
 
     return (
         <main>
@@ -66,23 +64,37 @@ function App () {
                         Login
                     </button>
                 </div>
-                <div className="py-5 pb-3 text-md tracking-wide"></div>
+                <div className="py-5 pb-3 text-md tracking-wide">
+                    {JSON.stringify(loginData, null, 4)}
+                </div>
             </section>
 
             <section className="w-1/3 bg-[#ecf0f1] m-10 my-10 p-5 rounded-md">
                 <div className="text-2xl font-semibold">Session</div>
                 <div className="py-2">
-                    <button className="bg-[#67f2d1] mt-7 p-5 w-56 text-lg font-semibold rounded tracking-wide relative active:top-1">Get session data</button>
+                    <button
+                        className="bg-[#67f2d1] mt-7 p-5 w-56 text-lg font-semibold rounded tracking-wide relative active:top-1"
+                        onClick={() => { getSessionData(); }}
+                    >
+                        Get session data
+                    </button>
                 </div>
-                <div className="py-5 pb-3 text-md tracking-wide"></div>
+                <div className="py-5 pb-3 text-md tracking-wide">{JSON.stringify(sessionData, null, 4)}</div>
             </section>
 
             <section className="w-1/3 bg-[#ecf0f1] m-10 my-10 p-5 rounded-md">
                 <div className="text-2xl font-semibold">Logout</div>
                 <div className="py-2">
-                    <button className="bg-[#67f2d1] mt-7 p-5 w-40 text-lg font-semibold rounded tracking-wide relative active:top-1">Logout </button>
+                    <button
+                        className="bg-[#67f2d1] mt-7 p-5 w-40 text-lg font-semibold rounded tracking-wide relative active:top-1"
+                        onClick={() => { logout() }}
+                    >
+                        Logout
+                    </button>
                 </div>
-                <div className="py-5 pb-3 text-md tracking-wide"></div>
+                <div className="py-5 pb-3 text-md tracking-wide">
+                    {JSON.stringify(logoutData, null, 4)}
+                </div>
             </section>
 
         </main>
