@@ -20,7 +20,7 @@ function deserializeUser(req: Request, res: Response, next: NextFunction) {
 
     // expired but valid access token
     const { payload: refresh } = expired && refreshToken ? verifyJWT(refreshToken as string) : { payload: null };
-  
+
     if (!refresh) {
         return next();
     }
@@ -32,12 +32,15 @@ function deserializeUser(req: Request, res: Response, next: NextFunction) {
         return next();
     }
 
+    // creates a new access token
     const newAccessToken = signJWT(session, process.env.JWT_TIME_1 as string);
 
+    // gets the user information from the new access token created
     const user = verifyJWT(newAccessToken).payload;
 
     // @ts-ignore
     user.accessToken = newAccessToken
+
     // @ts-ignore
     req.user = user;
 

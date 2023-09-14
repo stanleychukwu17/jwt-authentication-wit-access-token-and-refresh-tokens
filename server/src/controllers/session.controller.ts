@@ -16,6 +16,7 @@ export function createSessionHandler(req: Request, res: Response) {
     // first we check to see if there are any active sessions for this user
     const activeSession = check_if_this_user_has_an_active_session(email)
 
+    // if false, there are no active sessions
     if (activeSession.found === false) {
         // creates a new active session for the user
         const session = createSession(email, user.name);
@@ -37,6 +38,8 @@ export function createSessionHandler(req: Request, res: Response) {
 }
 
 export function getSessionHandler(req: Request, res: Response) {
+    // the user (i.e req.user) is gotten from the src/App.ts - there we used "app.use(deserializeUser);" the deserializeUser middleware checks to see if an accessToken was received,
+    // it uses the accessToken to find the correct information's for the user
     // @ts-ignore
     return res.json(req.user);
 }
