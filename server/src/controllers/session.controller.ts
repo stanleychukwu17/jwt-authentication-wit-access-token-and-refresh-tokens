@@ -16,19 +16,24 @@ export function createSessionHandler(req: Request, res: Response) {
     // first we check to see if there are any active sessions for this user
     const activeSession = check_if_this_user_has_an_active_session(email)
 
-    const session = createSession(email, user.name);
-    return res.json({'msg':'okay'});
-  
-    // create access token
-    // const accessToken = signJWT(
-    //     { email: user.email, name: user.name, sessionId: session.sessionId },
-    //     process.env.JWT_TIME_1 as string
-    // );
-  
-    // const refreshToken = signJWT({ sessionId: session.sessionId }, "1y");
-  
-    // send user back
-    // return res.json({'msg':'okay', accessToken, refreshToken});
+    if (activeSession.found === false) {
+        // creates a new active session for the user
+        const session = createSession(email, user.name);
+
+        // create access token
+        const accessToken = signJWT(
+            { email: user.email, name: user.name, sessionId: session.sessionId },
+            process.env.JWT_TIME_1 as string
+        );
+    
+        // creates a refresh token
+        const refreshToken = signJWT({sessionId: session.sessionId}, "1y");
+    
+        // send user back
+        return res.json({'msg':'okay', found: false, accessToken, refreshToken});
+    } else {
+        return res.json({'msg':'okay', found: true, activeSession});
+    }
 }
 
 export function getSessionHandler(req: Request, res: Response) {
